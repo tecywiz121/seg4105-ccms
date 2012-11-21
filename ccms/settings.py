@@ -150,3 +150,9 @@ LOGGING = {
         },
     }
 }
+
+# Load local settings from seperate file
+try:
+    from local_settings import *
+except ImportError:
+    pass
