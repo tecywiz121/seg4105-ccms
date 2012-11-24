@@ -2,7 +2,6 @@ from django.db import models
 from random import choice
 import string
 
-
 def generate_password(size=5, chars=string.digits):
     """Generates a random string of size characters from the list chars"""
     return ''.join(choice(chars) for x in range(size)) # TODO: Make secure with better random (os.urandom)
@@ -34,6 +33,9 @@ class Terminal(models.Model):
             test |= ord(mine) ^ ord(other)
         return not test
 
+    def __unicode__(self):
+        return self.name
+
 class Assignment(models.Model):
     """Stores the information related to a client."""
     password = models.CharField(max_length=10)      # TODO: Encrypt this
@@ -41,7 +43,22 @@ class Assignment(models.Model):
     active = models.BooleanField(default=True)
 
     keepalive_token = models.CharField(max_length=10)
+    keepalive_last = models.IntegerField()
+
     time_remaining = models.IntegerField()
+
+    # TODO: Save price, date, time
+
+    def keepalive(self, token, timestamp):
+        if token == self.keepalive_token:
+            delta_t = timestamp - self.keepalive_last
+            assert(delta_t >= 0)
+            self.time_remaining -= delta_t
+        else:
+            # The token is wrong, which means there are probably two active logins. BAD!
+            raise Exception('Incorrect token, probably two active terminals')
+
+        self.keepalive_last = timestamp
 
     def generate_token(self):
         self.keepalive_token = generate_password(10, string.ascii_lowercase + string.ascii_uppercase + string.digits)

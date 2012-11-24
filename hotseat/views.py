@@ -18,6 +18,7 @@ def login(request):
 
     password = form.cleaned_data['password']
     terminal_id = form.cleaned_data['terminalId']
+    timestamp = form.cleaned_data['timestamp']
 
     terminal = get_object_or_404(Terminal, pk=terminal_id)
 
@@ -26,10 +27,11 @@ def login(request):
 
     assignment = terminal.current_assignment
     assignment.generate_token()
+    assignment.keepalive_last = timestamp
     assignment.save()
 
     return HttpResponse(json.dumps({'token': assignment.keepalive_token,
-                                    'time_remaining': assignment.time_remaining}), mimetype='application/json')
+                                    'timeRemaining': assignment.time_remaining}), mimetype='application/json')
 
 
 @csrf_exempt
@@ -45,5 +47,17 @@ def logout(request):
 def keepalive(request):
     form = KeepaliveForm(request.POST)
     if not form.is_valid():
-        return HttpResponseBadRequest(form.errors)
-    return HttpResponse('Success')
+        return HttpResponseBadRequest(json.dumps({'error': form.errors}), mimetype='application/json')
+
+    terminal_id = form.cleaned_data['terminalId']
+    token = form.cleaned_data['token']
+    timestamp = form.cleaned_data['timestamp']
+
+    terminal = get_object_or_404(Terminal, pk=terminal_id)
+
+    assignment = terminal.current_assignment
+
+    assignment.keepalive(token, timestamp)
+    assignment.save()
+
+    return HttpResponse(json.dumps({'timeRemaining': assignment.time_remaining}), mimetype='application/json')
