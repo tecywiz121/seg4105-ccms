@@ -58,6 +58,10 @@ class Assignment(models.Model):
             # The token is wrong, which means there are probably two active logins. BAD!
             raise Exception('Incorrect token, probably two active terminals')
 
+        if self.time_remaining <= 0:
+            self.active = False
+
+
         self.keepalive_last = timestamp
 
     def generate_token(self):
