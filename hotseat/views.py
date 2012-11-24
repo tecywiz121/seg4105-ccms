@@ -14,7 +14,7 @@ def login(request):
     """Accepts a password and returns a token to track time usage"""
     form = LoginForm(request.POST)
     if not form.is_valid():
-        return HttpResponseBadRequest(form.errors)
+        return HttpResponseBadRequest(json.dumps({'error': form.errors}), mimetype='application/json')
 
     password = form.cleaned_data['password']
     terminal_id = form.cleaned_data['terminalId']
