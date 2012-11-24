@@ -28,7 +28,7 @@ def login(request):
     assignment.save()
 
     return HttpResponse(json.dumps({'token': assignment.keepalive_token,
-                                    'time_remaining': assignment.time_remaining}))
+                                    'time_remaining': assignment.time_remaining}), mimetype='application/json')
 
 
 @csrf_exempt
