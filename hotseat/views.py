@@ -24,7 +24,8 @@ def login(request):
     if not terminal.check_password(password):
         return HttpResponseForbidden('Incorrect Password')
 
-    assignment = terminal.assign()
+    assignment = terminal.current_assignment
+    assignment.generate_token()
     assignment.save()
 
     return HttpResponse(json.dumps({'token': assignment.keepalive_token,
