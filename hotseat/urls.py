@@ -1,12 +1,10 @@
 from django.conf.urls import patterns, include, url
-import hotseat.urls
-
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from .views import login, logout, keepalive
 
 urlpatterns = patterns('',
-    url(r'^api/', include(hotseat.urls)),
+    url(r'^login/', login, name='hs_login'),
+    url(r'^logout/', logout, name='hs_logout'),
+    url(r'^keepalive/', keepalive, name='hs_keepalive'),
     # Examples:
     # url(r'^$', 'ccms.views.home', name='home'),
     # url(r'^ccms/', include('ccms.foo.urls')),
