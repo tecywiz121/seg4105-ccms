@@ -25,6 +25,7 @@ class Terminal(models.Model):
         assignment.password = generate_password()
         assignment.terminal = self
         assignment.generate_token()
+        assignment.keepalive_last = 0
         return assignment
 
     def check_password(self, other_password):
@@ -84,4 +85,4 @@ class Assignment(models.Model):
         time_hours = self.time_remaining/3600
         time_minutes =  (self.time_remaining%3600)/60
         time_seconds =  ((self.time_remaining%3600)%60)
-   
+        return '{}h {}min {}sec'.format(time_hours, time_minutes, time_seconds)
