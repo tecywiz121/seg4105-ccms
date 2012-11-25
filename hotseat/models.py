@@ -57,6 +57,8 @@ class Assignment(models.Model):
     created = models.DateTimeField(auto_now_add=True, default=datetime.now)
     last_updated = models.DateTimeField(auto_now=True, default=datetime.now)
 
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+
     def keepalive(self, token, timestamp):
         if token == self.keepalive_token:
             delta_t = timestamp - self.keepalive_last
