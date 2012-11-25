@@ -74,3 +74,10 @@ class Assignment(models.Model):
 
     def generate_token(self):
         self.keepalive_token = generate_password(10, string.ascii_lowercase + string.ascii_uppercase + string.digits)
+
+    def format_time_remaining(self):    
+        time_hours = self.time_remaining/3600
+        time_minutes =  (self.time_remaining%3600)/60
+        time_seconds =  ((self.time_remaining%3600)%60)
+        return ''.join(map(str, [time_hours, "h ", time_minutes, "min ", time_seconds, "sec"]))
+        
