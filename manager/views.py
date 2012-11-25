@@ -31,26 +31,31 @@ def select_terminal(request):
 
 def assign_terminal(request, terminal):
     terminalObj = get_object_or_404(Terminal, pk=terminal)
-    return render(request, 'manager/assignTerminal.html', {'terminal':terminalObj})
+    return render(request, 'manager/assignTerminal.html', {'terminal':terminalObj.pk})
+
+RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0}
 
 @require_POST
 def set_terminal(request, terminal):
     terminal = get_object_or_404(Terminal, pk=terminal)
     
-    hours = request.POST["hours"]
-    minutes = request.POST["minutes"]
+    hours = float(request.POST["hours"])
+    minutes = float(request.POST["minutes"])
     rate = request.POST["rate"]
     discountType = request.POST["discount"]
-    discountAmount = request.POST["amount"]
-    discountPercent = request.POST["percent"]
-   
+       
     assignment = terminal.assign()
-    assignment.time_remaining = hours * 3600 + minutes * 60
-    assignment.cost = rate * (assignment.time_remaining/3600.0)
+    assignment.time_remaining = hours * 3600.0 + minutes * 60.0
+    assignment.cost = RATES_DICT[rate] * (assignment.time_remaining/3600.0)
+    
     if discountType == "amount":
+        discountAmount = float(request.POST["amount"])
         assignment.cost -= Decimal(discountAmount)
     elif discountType == "percent":
-        assignment.cost *= 1 - Decimal(discountPercent)
+        discountPercent = float(request.POST["percent"])
+        assignment.cost *= 1.0 - Decimal(discountPercent)
+    
+    assignment.save()
         
     return redirect(select_terminal)
 

@@ -9,7 +9,7 @@
 Enter Purchase Details
 </p>
 
-<form name="input" action="/set_terminal/" method="post">
+<form name="input" action="{% url setTerminal terminal=terminal %}" method="post">
 {% csrf_token %}
 
 Time:

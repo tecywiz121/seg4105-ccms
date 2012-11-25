@@ -13,7 +13,7 @@ from manager import views
 urlpatterns = patterns('',
     url(r'^select_terminal/', select_terminal, name='selectTerminal'),
     url(r'^assign_terminal/(?P<terminal>[^/]*)/$', assign_terminal, name='assignTerminal'),
-    url(r'^set_terminal/', set_terminal, name='setTerminal'),
+    url(r'^set_terminal/(?P<terminal>[^/]*)/$', set_terminal, name='setTerminal'),
 
     url(r'^assignments/$', AssignmentListView.as_view(), name='report'),
     url(r'^assignments/(?P<year>[0-9]+)/$', AssignmentYearView.as_view(), name='reportYear'),
