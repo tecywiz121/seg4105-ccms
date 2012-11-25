@@ -39,11 +39,17 @@ class Terminal(models.Model):
 
 class Assignment(models.Model):
     """Stores the information related to a client."""
-    password = models.CharField(max_length=10)      # TODO: Encrypt this
+    password = models.CharField(max_length=10,
+                                blank=True,
+                                default=generate_password)      # TODO: Encrypt this
+
     terminal = models.ForeignKey(Terminal, related_name='assignments')
     active = models.BooleanField(default=True)
 
-    keepalive_token = models.CharField(max_length=10)
+    keepalive_token = models.CharField(max_length=10,
+                                       blank=True,
+                                       default=lambda: generate_password(10, string.ascii_letters + string.digits))
+
     keepalive_last = models.IntegerField()
 
     time_remaining = models.IntegerField()
