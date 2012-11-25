@@ -48,12 +48,13 @@ def set_terminal(request, terminal):
     assignment.time_remaining = hours * 3600.0 + minutes * 60.0
     assignment.cost = RATES_DICT[rate] * (assignment.time_remaining/3600.0)
     
-    if discountType == "amount":
+    print discountType
+    if discountType == "flatamount":
         discountAmount = float(request.POST["amount"])
-        assignment.cost -= Decimal(discountAmount)
-    elif discountType == "percent":
+        assignment.cost -= discountAmount
+    elif discountType == "percentage":
         discountPercent = float(request.POST["percent"])
-        assignment.cost *= 1.0 - Decimal(discountPercent)
+        assignment.cost *= 1.0 - discountPercent/100.0
     
     assignment.save()
         
