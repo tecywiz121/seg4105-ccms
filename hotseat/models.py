@@ -76,3 +76,6 @@ class Assignment(models.Model):
 
     def generate_token(self):
         self.keepalive_token = generate_password(10, string.ascii_lowercase + string.ascii_uppercase + string.digits)
+
+    def __unicode__(self):
+        return ': '.join([unicode(self.terminal), self.password])
