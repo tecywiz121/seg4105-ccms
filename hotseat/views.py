@@ -1,5 +1,5 @@
 # Create your views here.
-from .forms import LoginForm, LogoutForm, KeepaliveForm
+from .forms import LoginForm, KeepaliveForm
 from .models import Terminal
 
 from django.views.decorators.http import require_POST
@@ -33,14 +33,6 @@ def login(request):
     return HttpResponse(json.dumps({'token': assignment.keepalive_token,
                                     'timeRemaining': assignment.time_remaining}), mimetype='application/json')
 
-
-@csrf_exempt
-@require_POST
-def logout(request):
-    form = LogoutForm(request.POST)
-    if not form.is_valid():
-        return HttpResponseBadRequest(form.errors)
-    return HttpResponse('Success')
 
 @csrf_exempt
 @require_POST

@@ -7,8 +7,5 @@ class TerminalForm(forms.Form):
 class LoginForm(TerminalForm):
     password = forms.CharField(max_length=10, widget=forms.PasswordInput)
 
-class LogoutForm(TerminalForm):
-    pass
-
 class KeepaliveForm(TerminalForm):
     token = forms.CharField(max_length=10)
