@@ -1,0 +1,36 @@
+{% load static %}<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock title %}  |  CCMS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="edge">
+
+        <!-- Clickjacking protection -->
+        <!-- Internet Explorer versions less than 8 without javascript won't show content -->
+        <style type="text/css">html { display: none; }</style>{#       Hide the content by default #}
+        {# Show the content only if we're the top level frame #}
+        <script type="text/javascript">
+            if( self == top ) {
+                document.documentElement.style.display = 'block';
+            } else {
+                top.location = self.location;
+            }
+        </script>
+
+        <style>.noscript { display: none; }</style>
+        <noscript><style type="text/css">.noscript { display: inline; }</style></noscript>
+
+        <!--
+        <script type="text/javascript" src="{% static 'jquery/js/jquery-1.8.2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'jquery/js/jcanvas.min.js' %}"></script>
+        <link type="text/css" rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        -->
+        {% block head %}{% endblock head %}
+    </head>
+
+    <body>
+    {% block content %}
+    {% endblock content %}
+    </body>
+</html>
