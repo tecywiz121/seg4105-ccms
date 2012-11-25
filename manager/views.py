@@ -29,7 +29,7 @@ def generate_report(request):
 class AssignmentViewMixin(object):
     model = Assignment
     date_field = 'created'
-    context_object_name = 'assignments'
+    context_object_name = 'assignment_list'
     paginate_by = 10
     def get_template_names(self):
         return 'manager/base_reports.html'
