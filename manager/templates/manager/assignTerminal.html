@@ -1,14 +1,6 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<HTML xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-   <HEAD>
-      <TITLE>
-         Cyber Corner Management System - Select a Terminal
-      </TITLE>
-   </HEAD>
-<BODY>
-
+{% block content %}
 <a href="/select_terminal/">
     <button type="button">Cancel and go Back to Terminal Selection</button>
 </a>
@@ -18,11 +10,11 @@ Enter Purchase Details
 </p>
 
 <form name="input" action="/set_terminal/" method="post">
-{% csrf_token %} 
+{% csrf_token %}
 
-Time: 
+Time:
 <br />
-<input type="text" name="hours"> Hours 
+<input type="text" name="hours"> Hours
 <input type="text" name="minutes"> Minutes
 <br />
 <br />
@@ -55,5 +47,4 @@ Discount:
 <br />
 <input type="submit" value="Confirm">
 </form>
-
-</HTML>
+{% endblock content %}
