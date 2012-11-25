@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'south',
     'hotseat',
     'manager',
+    'crispy_forms',
 )
 
 # Enable the django debug toolbar
