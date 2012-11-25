@@ -129,6 +129,12 @@ INSTALLED_APPS = (
     'manager',
 )
 
+# Enable the django debug toolbar
+if DEBUG:
+    MIDDLEWARE_CLASSES = tuple(list(MIDDLEWARE_CLASSES) + ['debug_toolbar.middleware.DebugToolbarMiddleware'])
+    INSTALLED_APPS = tuple(list(INSTALLED_APPS) + ['debug_toolbar'])
+    INTERNAL_IPS = ('127.0.0.1',)
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
