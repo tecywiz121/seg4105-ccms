@@ -8,6 +8,11 @@ from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseForbid
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson as json
 
+from django.views.generic import YearArchiveView, MonthArchiveView, \
+                                    WeekArchiveView, DayArchiveView
+
+from hotseat.models import Assignment, Terminal
+
 def select_terminal(request):
     return render(request, 'helloworld.html')
 
@@ -20,6 +25,18 @@ def edit_terminal(request):
 def generate_report(request):
     return HttpResponse("Hello world. You're at the select terminal.")
 
+class AssignmentViewMixin(object):
+    model = Assignment
+    date_field = 'created'
 
+class AssignmentYearView(AssignmentViewMixin, YearArchiveView):
+    pass
 
+class AssignmentMonthView(AssignmentViewMixin, MonthArchiveView):
+    pass
 
+class AssignmentWeekView(AssignmentViewMixin, WeekArchiveView):
+    pass
+
+class AssignmentDayView(AssignmentViewMixin, DayArchiveView):
+    pass
