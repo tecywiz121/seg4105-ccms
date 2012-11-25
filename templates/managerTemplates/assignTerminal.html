@@ -1,0 +1,59 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <HEAD>
+      <TITLE>
+         Cyber Corner Management System - Select a Terminal
+      </TITLE>
+   </HEAD>
+<BODY>
+
+<a href="/select_terminal/">
+    <button type="button">Cancel and go Back to Terminal Selection</button>
+</a>
+
+<p>
+Enter Purchase Details
+</p>
+
+<form name="input" action="/set_terminal/" method="post">
+{% csrf_token %} 
+
+Time: 
+<br />
+<input type="text" name="hours"> Hours 
+<input type="text" name="minutes"> Minutes
+<br />
+<br />
+
+Rate:
+<br />
+
+<select>
+  <option value="base">Base: $2/h</option>
+  <option value="promotion">Promotion: S1.50/h</option>
+  <option value="happyHour">Happy Hour $1.00/h</option>
+</select>
+<br />
+<br />
+
+Discount:
+<br />
+
+<input type="radio" name="discount" value="none" checked>None
+<br />
+
+<input type="radio" name="discount" value="flatamount">Flat Amount (CND)
+<input type="text" name="amount">
+<br />
+
+<input type="radio" name="discount" value="percentage">Percentage (%)
+<input type="text" name="percent">
+
+<br />
+<br />
+<input type="submit" value="Confirm">
+</form>
+
+</HTML>
