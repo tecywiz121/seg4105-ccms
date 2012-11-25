@@ -1,6 +1,7 @@
 from django.db import models
 from random import choice
 import string
+from datetime import datetime
 
 def generate_password(size=5, chars=string.digits):
     """Generates a random string of size characters from the list chars"""
@@ -47,7 +48,8 @@ class Assignment(models.Model):
 
     time_remaining = models.IntegerField()
 
-    # TODO: Save price, date, time
+    created = models.DateTimeField(auto_now_add=True, default=datetime.now)
+    last_updated = models.DateTimeField(auto_now=True, default=datetime.now)
 
     def keepalive(self, token, timestamp):
         if token == self.keepalive_token:
