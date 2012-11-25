@@ -18,7 +18,7 @@
             {% endif %}
             <tr>    
         {% endif %}
-        <td> <a href="http://www.w3schools.com">{{ t.name }}</a>
+        <td> <a href="/assign_terminal/{{ t.pk }}">{{ t.name }}</a>
         {% if t.is_available %}
             Available
         {% else %}

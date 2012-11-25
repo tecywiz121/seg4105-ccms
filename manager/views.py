@@ -25,13 +25,14 @@ def select_terminal(request):
     #return HttpResponse(output)
 	# output = ', '.join([str(t.is_available) for t in all_terminals_list])
     #return HttpResponse(output)
-    return render(request, 'managerTemplates\selectTerminal.html', {'terminals':context_all_terminals})
+    return render(request, 'managerTemplates/selectTerminal.html', {'terminals':context_all_terminals})
 
-def assign_terminal(request):
-    return HttpResponse("Hello world. You're at the select terminal.")
+def assign_terminal(request, terminal):
+    terminalObj = get_object_or_404(Terminal, pk=terminal)
+    return render(request, 'managerTemplates/assignTerminal.html', {'terminal':terminalObj})
 
-def edit_terminal(request):
-    return HttpResponse("Hello world. You're at the select terminal.")
+def set_terminal(request):
+    return render(request, 'managerTemplates/selectTerminal.html', {'terminals':context_all_terminals})
 
 def generate_report(request):
     return HttpResponse("Hello world. You're at the select terminal.")
