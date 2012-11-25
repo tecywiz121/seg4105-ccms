@@ -98,7 +98,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'ccms.urls'
@@ -126,7 +126,14 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'south',
     'hotseat',
+    'manager',
 )
+
+# Enable the django debug toolbar
+if DEBUG:
+    MIDDLEWARE_CLASSES = tuple(list(MIDDLEWARE_CLASSES) + ['debug_toolbar.middleware.DebugToolbarMiddleware'])
+    INSTALLED_APPS = tuple(list(INSTALLED_APPS) + ['debug_toolbar'])
+    INTERNAL_IPS = ('127.0.0.1',)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

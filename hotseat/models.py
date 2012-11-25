@@ -57,6 +57,8 @@ class Assignment(models.Model):
     created = models.DateTimeField(auto_now_add=True, default=datetime.now)
     last_updated = models.DateTimeField(auto_now=True, default=datetime.now)
 
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+
     def keepalive(self, token, timestamp):
         if token == self.keepalive_token:
             delta_t = timestamp - self.keepalive_last
@@ -75,9 +77,11 @@ class Assignment(models.Model):
     def generate_token(self):
         self.keepalive_token = generate_password(10, string.ascii_lowercase + string.ascii_uppercase + string.digits)
 
+    def __unicode__(self):
+        return ': '.join([unicode(self.terminal), self.password])
+
     def format_time_remaining(self):    
         time_hours = self.time_remaining/3600
         time_minutes =  (self.time_remaining%3600)/60
         time_seconds =  ((self.time_remaining%3600)%60)
-        return ''.join(map(str, [time_hours, "h ", time_minutes, "min ", time_seconds, "sec"]))
-        
+   

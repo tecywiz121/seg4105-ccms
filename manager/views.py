@@ -8,6 +8,12 @@ from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseForbid
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson as json
 
+from django.views.generic import YearArchiveView, MonthArchiveView,     \
+                                    WeekArchiveView, DayArchiveView,    \
+                                    ListView
+
+from hotseat.models import Assignment, Terminal
+
 def select_terminal(request):
     context_all_terminals = Terminal.objects.all()
     #output = ""
@@ -27,6 +33,25 @@ def edit_terminal(request):
 def generate_report(request):
     return HttpResponse("Hello world. You're at the select terminal.")
 
+class AssignmentViewMixin(object):
+    model = Assignment
+    date_field = 'created'
+    context_object_name = 'assignment_list'
+    paginate_by = 10
+    def get_template_names(self):
+        return 'manager/base_reports.html'
 
+class AssignmentListView(AssignmentViewMixin, ListView):
+    pass
 
+class AssignmentYearView(AssignmentViewMixin, YearArchiveView):
+    pass
 
+class AssignmentMonthView(AssignmentViewMixin, MonthArchiveView):
+    pass
+
+class AssignmentWeekView(AssignmentViewMixin, WeekArchiveView):
+    pass
+
+class AssignmentDayView(AssignmentViewMixin, DayArchiveView):
+    pass
