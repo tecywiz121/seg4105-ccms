@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% block report_header %}
+    <form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Generate Report"/>
+    </form>
+    {% endblock report_header %}
     {% block results %}
     <table class="report-table">
         <thead>

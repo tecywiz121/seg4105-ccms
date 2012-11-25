@@ -22,11 +22,11 @@ class ReportForm(forms.Form):
                             (DINNER, 'Dinner'))
 
     DAY_CHOICES = tuple((x, x) for x in range(1, 32))
-    MONTH_CHOICES = list(enumerate(calendar.month_name))[1:]
+    MONTH_CHOICES = list(zip((x.lower() for x in calendar.month_abbr), calendar.month_name))[1:]
     YEAR_CHOICES = tuple((x, x) for x in range(2000, 2100))
 
-    period = forms.MultipleChoiceField(widget=forms.RadioSelect, choices=PERIOD_CHOICES, initial=DAY)
+    period = forms.ChoiceField(widget=forms.RadioSelect, choices=PERIOD_CHOICES, initial=DAY)
     time_of_day = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=TIME_OF_DAY_CHOICES, initial=[ALL_DAY])
     day = forms.ChoiceField(choices=DAY_CHOICES, initial=1, required=False)
-    month = forms.ChoiceField(choices=MONTH_CHOICES, initial=1)
+    month = forms.ChoiceField(choices=MONTH_CHOICES, initial=datetime.now().strftime('%b'))
     year = forms.ChoiceField(choices=YEAR_CHOICES, initial=datetime.now().year)
