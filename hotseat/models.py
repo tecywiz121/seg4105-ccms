@@ -79,3 +79,9 @@ class Assignment(models.Model):
 
     def __unicode__(self):
         return ': '.join([unicode(self.terminal), self.password])
+
+    def format_time_remaining(self):    
+        time_hours = self.time_remaining/3600
+        time_minutes =  (self.time_remaining%3600)/60
+        time_seconds =  ((self.time_remaining%3600)%60)
+   

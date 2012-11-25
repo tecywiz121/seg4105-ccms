@@ -18,7 +18,14 @@ from django.core.urlresolvers import reverse
 import datetime
 
 def select_terminal(request):
-    return render(request, 'helloworld.html')
+    context_all_terminals = Terminal.objects.all()
+    #output = ""
+    #for t in all_terminals_list:
+	#    output += str(t.is_available) + " " + str(t.name) + " "
+    #return HttpResponse(output)
+	# output = ', '.join([str(t.is_available) for t in all_terminals_list])
+    #return HttpResponse(output)
+    return render(request, 'managerTemplates\selectTerminal.html', {'terminals':context_all_terminals})
 
 def assign_terminal(request):
     return HttpResponse("Hello world. You're at the select terminal.")

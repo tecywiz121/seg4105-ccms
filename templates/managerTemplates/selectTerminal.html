@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+   <HEAD>
+      <TITLE>
+         Cyber Corner Management System - Select a Terminal
+      </TITLE>
+   </HEAD>
+<BODY>
+<p>
+<table>
+    {% for t in terminals %}
+        {% if forloop.counter0|divisibleby:"2" %}
+            {% if forloop.counter0 > 0 %}
+            </tr>
+            {% endif %}
+            <tr>    
+        {% endif %}
+        <td> <a href="http://www.w3schools.com">{{ t.name }}</a>
+        {% if t.is_available %}
+            Available
+        {% else %}
+            {{ t.current_assignment.format_time_remaining }} </td>
+        {% endif %}
+    {% empty %}
+    Sorry, no terminals exist.
+    {% endfor %}
+    </tr>
+    
+</table>    
+</p>
+
+</BODY>
+</HTML>
