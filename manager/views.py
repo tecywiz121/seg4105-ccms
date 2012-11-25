@@ -1,6 +1,8 @@
 # Create your views here.
 from hotseat.models import Terminal
 
+from decimal import Decimal
+
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -31,8 +33,26 @@ def assign_terminal(request, terminal):
     terminalObj = get_object_or_404(Terminal, pk=terminal)
     return render(request, 'manager/assignTerminal.html', {'terminal':terminalObj})
 
-def set_terminal(request):
-    return render(request, 'manager/selectTerminal.html', {'terminals':context_all_terminals})
+@require_POST
+def set_terminal(request, terminal):
+    terminal = get_object_or_404(Terminal, pk=terminal)
+    
+    hours = request.POST["hours"]
+    minutes = request.POST["minutes"]
+    rate = request.POST["rate"]
+    discountType = request.POST["discount"]
+    discountAmount = request.POST["amount"]
+    discountPercent = request.POST["percent"]
+   
+    assignment = terminal.assign()
+    assignment.time_remaining = hours * 3600 + minutes * 60
+    assignment.cost = rate * (assignment.time_remaining/3600.0)
+    if discountType == "amount":
+        assignment.cost -= Decimal(discountAmount)
+    elif discountType == "percent":
+        assignment.cost *= 1 - Decimal(discountPercent)
+        
+    return redirect(select_terminal)
 
 def generate_report(request):
     return HttpResponse("Hello world. You're at the select terminal.")
