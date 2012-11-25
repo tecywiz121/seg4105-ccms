@@ -8,8 +8,9 @@ from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseForbid
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson as json
 
-from django.views.generic import YearArchiveView, MonthArchiveView, \
-                                    WeekArchiveView, DayArchiveView
+from django.views.generic import YearArchiveView, MonthArchiveView,     \
+                                    WeekArchiveView, DayArchiveView,    \
+                                    ListView
 
 from hotseat.models import Assignment, Terminal
 
@@ -28,6 +29,13 @@ def generate_report(request):
 class AssignmentViewMixin(object):
     model = Assignment
     date_field = 'created'
+    context_object_name = 'assignments'
+    paginate_by = 10
+    def get_template_names(self):
+        return 'manager/base_reports.html'
+
+class AssignmentListView(AssignmentViewMixin, ListView):
+    pass
 
 class AssignmentYearView(AssignmentViewMixin, YearArchiveView):
     pass
