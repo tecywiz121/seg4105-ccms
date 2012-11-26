@@ -32,14 +32,14 @@ def select_terminal(request):
 def assign_terminal(request, terminal):
     terminalObj = get_object_or_404(Terminal, pk=terminal)
     return render(request, 'manager/assignTerminal.html', {'terminal':terminalObj.pk})
-  
+
 def display_new_assignment_details(request, assignment):
     assignment = get_object_or_404(Assignment, pk=assignment)
     return render(request, 'manager/display_new_assignment_details.html', {'assignment':assignment})
-       
+
 def display_updated_assignment_details(request, assignment):
     assignment = get_object_or_404(Assignment, pk=assignment)
-    return render(request, 'manager/display_new_assignment_details.html', {'assignment':assignment})   
+    return render(request, 'manager/display_new_assignment_details.html', {'assignment':assignment})
 
 RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0, "free":0.0}
 
@@ -47,8 +47,8 @@ RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0, "free":0.0}
 def set_terminal(request, terminal):
     terminal = get_object_or_404(Terminal, pk=terminal)
 
-    hours = float(request.POST["hours"])
-    minutes = float(request.POST["minutes"])
+    hours = float(0 if not request.POST["hours"] else request.POST["hours"])
+    minutes = float(0 if not request.POST["minutes"] else request.POST["minutes"])
     rate = request.POST["rate"]
     discountType = request.POST["discount"]
 
@@ -81,7 +81,7 @@ def set_terminal(request, terminal):
 
     if (assignment_is_new):
         return redirect(display_new_assignment_details, assignment=assignment.pk)
-    
+
     else:
         return redirect(display_updated_assignment_details, assignment=assignment.pk)
 
