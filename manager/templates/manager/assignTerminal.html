@@ -9,13 +9,39 @@
 Enter Purchase Details
 </p>
 
-<form name="input" action="{% url setTerminal terminal=terminal %}" method="post">
+<form name="input" id="assignmentForm" action="{% url setTerminal terminal=terminal %}" method="post">
 {% csrf_token %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("form#assignmentForm").submit(function () {
+        $("p#timeErrorBox").hide();
+        var h = $("input#hoursField").val();
+        var m = $("input#minutesField").val();
+
+        if (h || m) {
+           if(h.match(/^[0-9]*$/) && h.match(/^[0-9]*$/)) {
+                return true;
+           } else {
+                $("p#timeErrorBox").text("Hours and minutes must be whole numbers");
+                $("p#timeErrorBox").show();
+                return false;
+           }
+        } else {
+            $("p#timeErrorBox").text("You must enter a time");
+            $("p#timeErrorBox").show();
+            return false;
+        }
+    });
+    $("p#timeErrorBox").hide();
+});
+</script>
 
 Time:
 <br />
-<input type="text" name="hours"> Hours
-<input type="text" name="minutes"> Minutes
+<input type="text" name="hours" id="hoursField"> Hours
+<input type="text" name="minutes" id="minutesField"> Minutes
+<p id="timeErrorBox" style="color:red;"></p>
 <br />
 <br />
 
