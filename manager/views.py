@@ -33,31 +33,42 @@ def assign_terminal(request, terminal):
     terminalObj = get_object_or_404(Terminal, pk=terminal)
     return render(request, 'manager/assignTerminal.html', {'terminal':terminalObj.pk})
 
-RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0}
+RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0, "free":0.0}
 
 @require_POST
 def set_terminal(request, terminal):
     terminal = get_object_or_404(Terminal, pk=terminal)
-    
+
     hours = float(request.POST["hours"])
     minutes = float(request.POST["minutes"])
     rate = request.POST["rate"]
     discountType = request.POST["discount"]
-       
-    assignment = terminal.assign()
-    assignment.time_remaining = hours * 3600.0 + minutes * 60.0
-    assignment.cost = RATES_DICT[rate] * (assignment.time_remaining/3600.0)
-    
+
+    time = hours * 3600.0 + minutes * 60.0
+    cost = RATES_DICT[rate] * (time/3600.0)
+
     print discountType
     if discountType == "flatamount":
         discountAmount = float(request.POST["amount"])
-        assignment.cost -= discountAmount
+        cost -= discountAmount
     elif discountType == "percentage":
         discountPercent = float(request.POST["percent"])
-        assignment.cost *= 1.0 - discountPercent/100.0
-    
+        cost *= 1.0 - discountPercent/100.0
+
+    if terminal.is_available:
+        assignment = terminal.assign()
+        assignment.time_remaining = time
+	assignment.cost = cost
+    else:
+        assignment = terminal.current_assignment
+	assignment.edit_time_remaining(time)
+	assignment.edit_cost(cost)
+
+    if assignment.time_remaining <= 0:
+	assignment.active = False
+
     assignment.save()
-        
+
     return redirect(select_terminal)
 
 def generate_report(request):

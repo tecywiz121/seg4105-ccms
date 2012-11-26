@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}Assign Terminal{% endblock title %}
+
 {% block content %}
 <a href="/select_terminal/">
     <button type="button">Cancel and go Back to Terminal Selection</button>
@@ -9,13 +11,60 @@
 Enter Purchase Details
 </p>
 
-<form name="input" action="{% url setTerminal terminal=terminal %}" method="post">
+<form name="input" id="assignmentForm" action="{% url setTerminal terminal=terminal %}" method="post">
 {% csrf_token %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("form#assignmentForm").submit(function () {
+        $("p#assignmentErrorBox").hide();
+        var h = $("input#hoursField").val();
+        var m = $("input#minutesField").val();
+
+        if (h || m) {
+           if(!h.match(/^[0-9]*$/) || !h.match(/^[0-9]*$/)) {
+                $("p#assignmentErrorBox").text("Hours and minutes must be whole numbers");
+                $("p#assignmentErrorBox").show();
+                return false;
+           }
+        } else {
+            $("p#assignmentErrorBox").text("You must enter a time");
+            $("p#assignmentErrorBox").show();
+            return false;
+        }
+
+        switch($("input[name=discount]:checked").val()) {
+            case "flatamount":
+                var amount = $("input[name=amount]").val();                
+                if (!amount.match(/[0-9]+(\.[0-9]?[0-9]?)?/)) {
+                    $("p#assignmentErrorBox").text("Discount amount must be a number");
+                    $("p#assignmentErrorBox").show();
+                    return false;
+                }
+            break;
+
+            case "percentage":
+                var percentage = $("input[name=percent]").val();                
+                if(!percentage.match(/[0-9]+(\.[0-9]+)? ?%?/)) {
+                    $("p#assignmentErrorBox").text("Discount percentage must be a number");
+                    $("p#assignmentErrorBox").show();
+                    return false;
+                }
+            break;
+
+            default:
+                alert("Default '" + $("input[name=discount]").val() + "'");
+                // Nothing special to check here
+        }
+    });
+    $("p#assignmentErrorBox").hide();
+});
+</script>
 
 Time:
 <br />
-<input type="text" name="hours"> Hours
-<input type="text" name="minutes"> Minutes
+<input type="text" name="hours" id="hoursField"> Hours
+<input type="text" name="minutes" id="minutesField"> Minutes
 <br />
 <br />
 
@@ -26,6 +75,7 @@ Rate:
   <option value="base">Base: $2/h</option>
   <option value="promotion">Promotion: S1.50/h</option>
   <option value="happyHour">Happy Hour $1.00/h</option>
+  <option value="free">FREE $0.00/h</option>
 </select>
 <br />
 <br />
@@ -36,7 +86,7 @@ Discount:
 <input type="radio" name="discount" value="none" checked>None
 <br />
 
-<input type="radio" name="discount" value="flatamount">Flat Amount (CND)
+<input type="radio" name="discount" value="flatamount">Flat Amount (CDN)
 <input type="text" name="amount">
 <br />
 
@@ -45,6 +95,7 @@ Discount:
 
 <br />
 <br />
+<p id="assignmentErrorBox" style="color:red;"></p>
 <input type="submit" value="Confirm">
 </form>
 {% endblock content %}

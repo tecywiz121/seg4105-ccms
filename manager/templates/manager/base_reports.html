@@ -1,15 +1,21 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Reports{% endblock title %}
 
 {% block content %}
+    <h2>Report</h2>
+    <h3>Generation Options</h3>
     {% block report_header %}
     <form method="POST">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Generate Report"/>
+    {{ form|crispy }}
+    <button type="submit" class="btn">Generate Report</button>
     </form>
     {% endblock report_header %}
+    <h3>Results</h3>
     {% block results %}
-    <table class="report-table">
+    <table class="table table-striped report-table">
         <thead>
             <tr>
                 <th>Date</th>
