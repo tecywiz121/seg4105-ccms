@@ -2,6 +2,7 @@ from django.db import models
 from random import choice
 import string
 from datetime import datetime
+from decimal import Decimal
 
 def generate_password(size=5, chars=string.digits):
     """Generates a random string of size characters from the list chars"""
@@ -86,3 +87,10 @@ class Assignment(models.Model):
         time_minutes =  (self.time_remaining%3600)/60
         time_seconds =  ((self.time_remaining%3600)%60)
         return '{}h {}min {}sec'.format(time_hours, time_minutes, time_seconds)
+        
+    def edit_time_remaining(self, time_change):
+        self.time_remaining += time_change
+        
+    def edit_cost(self, cost_change):
+        self.cost += Decimal(cost_change)
+    
