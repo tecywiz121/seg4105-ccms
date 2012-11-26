@@ -64,6 +64,9 @@ def set_terminal(request, terminal):
     assignment.edit_time_remaining(time)
     assignment.edit_cost(cost)
     
+    if assignment.time_remaining <= 0:
+	assignment.active = False
+
     assignment.save()
         
     return redirect(select_terminal)
