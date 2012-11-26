@@ -8,7 +8,7 @@
     <form method="POST">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Generate Report"/>
+    <button type="submit" class="btn">Generate Report</button>
     </form>
     {% endblock report_header %}
     <h3>Results</h3>
