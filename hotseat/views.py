@@ -49,6 +49,9 @@ def keepalive(request):
 
     assignment = terminal.current_assignment
 
+    if assignment.time_remaining <= 0:
+        assignment.active = False
+
     assignment.keepalive(token, timestamp)
     assignment.save()
 

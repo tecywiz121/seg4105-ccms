@@ -60,7 +60,7 @@ def set_terminal(request, terminal):
         discountAmount = float(request.POST["amount"])
         cost -= discountAmount
     elif discountType == "percentage":
-        discountPercent = float(request.POST["percent"])
+        discountPercent = float(request.POST["percent"].translate(None, ' %'))
         cost *= 1.0 - discountPercent/100.0
 
     if terminal.is_available:
