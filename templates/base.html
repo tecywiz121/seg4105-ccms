@@ -24,15 +24,25 @@
 
         <script type="text/javascript" src="{% static 'jquery/js/jquery-1.8.3.min.js' %}"></script>
         <link type="text/css" rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+        <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
         {% block head %}{% endblock head %}
     </head>
 
     <body>
-    <ul>
-        <li><a href="{% url selectTerminal %}">Terminals</a></li>
-        <li><a href="{% url report %}">Reports</a></li>
-    </ul>
+    {# Build the menu system #}
+    {% url selectTerminal as url_select %}
+    {% url report as url_report %}
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">CCMS</a>
+            <ul class="nav">
+                <li{% if url_select in request.path %} class="active"{% endif %}><a href="{{ url_select }}">Terminals</a></li>
+                <li{% if url_report in request.path %} class="active"{% endif %}><a href="{{ url_report }}">Reports</a></li>
+            </ul>
+        </div>
+    </div>
+
     {% block content %}
     {% endblock content %}
     </body>

@@ -3,6 +3,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 from os.path import join as p_join, dirname, realpath
 
 BASE_DIR = realpath(p_join(dirname( __file__ ), '..' ))
@@ -130,6 +131,8 @@ INSTALLED_APPS = (
     'manager',
     'crispy_forms',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.request',)
 
 # Enable the django debug toolbar
 if DEBUG:
