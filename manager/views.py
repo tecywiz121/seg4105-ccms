@@ -39,7 +39,7 @@ def display_new_assignment_details(request, assignment):
 
 def display_updated_assignment_details(request, assignment):
     assignment = get_object_or_404(Assignment, pk=assignment)
-    return render(request, 'manager/display_new_assignment_details.html', {'assignment':assignment})
+    return render(request, 'manager/display_updated_assignment_details.html', {'assignment':assignment})
 
 RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0, "free":0.0}
 
@@ -60,7 +60,7 @@ def set_terminal(request, terminal):
         discountAmount = float(request.POST["amount"])
         cost -= discountAmount
     elif discountType == "percentage":
-        discountPercent = float(request.POST["percent"].translate(None, ' %'))
+        discountPercent = float(request.POST["percent"])
         cost *= 1.0 - discountPercent/100.0
 
     if terminal.is_available:
