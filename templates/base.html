@@ -35,7 +35,7 @@
     {% url report as url_report %}
     <div class="navbar">
         <div class="navbar-inner">
-            <a class="brand" href="#">CCMS</a>
+            <a class="brand" href="/">CCMS</a>
             <ul class="nav">
                 <li{% if url_select in request.path %} class="active"{% endif %}><a href="{{ url_select }}">Terminals</a></li>
                 <li{% if url_report in request.path %} class="active"{% endif %}><a href="{{ url_report }}">Reports</a></li>
