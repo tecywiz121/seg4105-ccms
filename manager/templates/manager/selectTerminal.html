@@ -3,6 +3,25 @@
 
 {% block title %}Terminals{% endblock title %}
 
+{% block head %}
+<style type="text/css" media="all">
+    .terminal {
+        width:300px;
+        background:url({% static 'manager/desk_facing_left.png'%}) no-repeat;
+        background-position:center right;
+        height:58px;
+    }
+
+    .terminal-info {
+        width:150px;
+        text-align:right;
+        display:inline-block;
+        vertical-align:middle;
+        margin-right:20px;
+    }
+</style>
+{% endblock head %}
+
 {% block content %}
 <p>
 <table>
@@ -11,19 +30,27 @@
             {% if forloop.counter0 > 0 %}
             </tr>
             {% endif %}
-            <tr>    
+            <tr>
         {% endif %}
-        <td> <a href="/assign_terminal/{{ t.pk }}">{{ t.name }}</a>
-        {% if t.is_available %}
-            Available
-        {% else %}
-            {{ t.current_assignment.format_time_remaining }} </td>
-        {% endif %}
+        <td class="terminal{% if t.is_available %} available{% endif %}">
+            <div class="terminal-info">
+            {{ t.name }}<br>
+            <a href="{% url assignTerminal terminal=t.pk %}">
+                {% if t.is_available %}Assign{% else %}Edit{% endif %}
+            </a>
+            <br>&nbsp;
+            {% if not t.is_available %}
+            {{ t.current_assignment.format_time_remaining }}
+            {% endif %}
+            </div>
+            {% if not t.is_available %}
+                <img alt="customer" src="{% static 'manager/customer.png' %}">
+            {% endif %}
+        </td>
     {% empty %}
     Sorry, no terminals exist.
     {% endfor %}
     </tr>
-    
-</table>    
+</table>
 </p>
 {% endblock content %}
