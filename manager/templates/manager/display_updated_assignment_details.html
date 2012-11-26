@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}New Assignment Details{% endblock title %}
+
+{% block content %}
+<a href="/select_terminal/">
+    <button type="button">Proceed to Terminal Selection</button>
+</a>
+
+<br />
+<br />
+
+<p>
+New Assignment Details - Please take note of your password
+</p>
+
+<br />
+<br />
+
+Terminal ID: {{ assignment.terminal.name }}
+<br />
+Time Remaining:{{ assignment.format_time_remaining }}
+<br />
+Cost:{{ assignment.cost }}
+
+
+{% endblock content %}
