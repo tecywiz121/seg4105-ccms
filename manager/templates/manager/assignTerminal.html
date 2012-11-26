@@ -3,7 +3,6 @@
 {% block title %}Assign Terminal{% endblock title %}
 
 {% block content %}
-
 <h3>Assign Terminal {{ terminal.name }}</h3>
 <form class="form-horizontal" name="input" id="assignmentForm" action="{% url setTerminal terminal=terminal %}" method="post">
 {% csrf_token %}

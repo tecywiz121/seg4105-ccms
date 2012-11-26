@@ -32,6 +32,14 @@ def select_terminal(request):
 def assign_terminal(request, terminal):
     terminalObj = get_object_or_404(Terminal, pk=terminal)
     return render(request, 'manager/assignTerminal.html', {'terminal':terminalObj.pk})
+  
+def display_new_assignment_details(request, assignment):
+    assignment = get_object_or_404(Assignment, pk=assignment)
+    return render(request, 'manager/display_new_assignment_details.html', {'assignment':assignment})
+       
+def display_updated_assignment_details(request, assignment):
+    assignment = get_object_or_404(Assignment, pk=assignment)
+    return render(request, 'manager/display_new_assignment_details.html', {'assignment':assignment})   
 
 RATES_DICT = {"base":2.0, "promotion":1.50, "happyHour":1.0, "free":0.0}
 
@@ -56,20 +64,26 @@ def set_terminal(request, terminal):
         cost *= 1.0 - discountPercent/100.0
 
     if terminal.is_available:
+        assignment_is_new = True
         assignment = terminal.assign()
         assignment.time_remaining = time
-	assignment.cost = cost
+        assignment.cost = cost
     else:
+        assignment_is_new = False
         assignment = terminal.current_assignment
-	assignment.edit_time_remaining(time)
-	assignment.edit_cost(cost)
+        assignment.edit_time_remaining(time)
+        assignment.edit_cost(cost)
 
     if assignment.time_remaining <= 0:
-	assignment.active = False
+        assignment.active = False
 
     assignment.save()
 
-    return redirect(select_terminal)
+    if (assignment_is_new):
+        return redirect(display_new_assignment_details, assignment=assignment.pk)
+    
+    else:
+        return redirect(display_updated_assignment_details, assignment=assignment.pk)
 
 def generate_report(request):
     return HttpResponse("Hello world. You're at the select terminal.")
