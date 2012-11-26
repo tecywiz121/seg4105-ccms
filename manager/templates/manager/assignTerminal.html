@@ -3,18 +3,8 @@
 {% block title %}Assign Terminal{% endblock title %}
 
 {% block content %}
-<a href="/select_terminal/">
-    <button type="button">Cancel and go Back to Terminal Selection</button>
-</a>
-
-<br />
-<br />
-
-<p>
-Enter Purchase Details
-</p>
-
-<form name="input" id="assignmentForm" action="{% url setTerminal terminal=terminal %}" method="post">
+<h3>Assign Terminal {{ terminal.name }}</h3>
+<form class="form-horizontal" name="input" id="assignmentForm" action="{% url setTerminal terminal=terminal %}" method="post">
 {% csrf_token %}
 
 <script type="text/javascript">
@@ -24,7 +14,7 @@ $(document).ready(function() {
         var h = $("input#hoursField").val();
         var m = $("input#minutesField").val();
 
-        if (h || m) {
+        if (h || m) {
             if(!h) {
                 h = 0;
                 $("input#hoursField").val("0");
@@ -46,7 +36,7 @@ $(document).ready(function() {
 
         switch($("input[name=discount]:checked").val()) {
             case "flatamount":
-                var amount = $("input[name=amount]").val();                
+                var amount = $("input[name=amount]").val();
                 if (!amount.match(/[0-9]+(\.[0-9]?[0-9]?)?/)) {
                     $("p#assignmentErrorBox").text("Discount amount must be a number");
                     $("p#assignmentErrorBox").show();
@@ -55,7 +45,7 @@ $(document).ready(function() {
             break;
 
             case "percentage":
-                var percentage = $("input[name=percent]").val();                
+                var percentage = $("input[name=percent]").val();
                 if(!percentage.match(/[0-9]+(\.[0-9]+)? ?%?/)) {
                     $("p#assignmentErrorBox").text("Discount percentage must be a number");
                     $("p#assignmentErrorBox").show();
@@ -71,41 +61,59 @@ $(document).ready(function() {
 });
 </script>
 
-Time:
-<br />
-<input type="text" name="hours" id="hoursField"> Hours
-<input type="text" name="minutes" id="minutesField"> Minutes
-<br />
-<br />
+<div class="control-group">
+  <label class="control-label">Time</label>
+  <div class="controls controls-row">
+    <input type="text" name="hours" id="hoursField" class="span1"><label for="hoursField" class="span1">Hours</label>
+    <input type="text" name="minutes" id="minutesField" class="span1"><label for="minutesField" class="span1">Minutes</label>
+  </div>
+</div>
 
-Rate:
-<br />
-
-<select name="rate">
+<div class="control-group">
+<label class="control-label" for="rate">Rate</label>
+<div class="controls">
+<select id="rate" name="rate">
   <option value="base">Base: $2/h</option>
   <option value="promotion">Promotion: S1.50/h</option>
   <option value="happyHour">Happy Hour $1.00/h</option>
   <option value="free">FREE $0.00/h</option>
 </select>
-<br />
-<br />
+</div>
 
-Discount:
-<br />
+<div class="control-group">
+  <label class="control-label">
+    Discount Type
+  </label>
 
-<input type="radio" name="discount" value="none" checked>None
-<br />
+  <div class="controls">
+    <label class="radio"><input type="radio" name="discount" value="none" checked id="d_none">None</label>
+    <label class="radio"><input type="radio" name="discount" value="flatamount" id="d_flat">Flat Amount ($)</label>
+    <label class="radio"><input type="radio" name="discount" value="percentage" id="d_percent">Percentage (%)</label>
+  </div>
+</div>
 
-<input type="radio" name="discount" value="flatamount">Flat Amount (CDN)
-<input type="text" name="amount">
-<br />
+<div class="control-group discount-amount">
+  <label class="control-label">
+    Flat Rate Discount
+  </label>
+  <div class="controls">
+    <input type="text" name="amount" >
+  </div>
+  </div>
+</div>
 
-<input type="radio" name="discount" value="percentage">Percentage (%)
-<input type="text" name="percent">
-
-<br />
-<br />
+<div class="control-group discount-amount">
+  <label class="control-label">
+    Percentage Discount
+  </label>
+  <div class="controls">
+  <input type="text" name="percent">
+  </div>
+</div>
 <p id="assignmentErrorBox" style="color:red;"></p>
-<input type="submit" value="Confirm">
+<input type="submit" value="Confirm" class="btn btn-primary">
+<a href="/select_terminal/" class="btn">
+  Cancel and Go Back to Terminal Selection
+</a>
 </form>
 {% endblock content %}
