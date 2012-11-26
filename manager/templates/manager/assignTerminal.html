@@ -16,7 +16,15 @@ $(document).ready(function() {
         var m = $("input#minutesField").val();
 
         if (h || m) {
-           if(!h.match(/^[0-9]*$/) || !h.match(/^[0-9]*$/)) {
+            if(!h) {
+                h = 0;
+                $("input#hoursField").val("0");
+            }
+            if(!m) {
+                m = 0;
+                $("input#minutesField").val("0");
+            }
+           if(!h.match(/^-?[0-9]*$/) || !h.match(/^-?[0-9]*$/)) {
                 $("p#assignmentErrorBox").text("Hours and minutes must be whole numbers");
                 $("p#assignmentErrorBox").show();
                 return false;
@@ -47,7 +55,6 @@ $(document).ready(function() {
             break;
 
             default:
-                alert("Default '" + $("input[name=discount]").val() + "'");
                 // Nothing special to check here
         }
     });
